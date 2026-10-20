@@ -8,10 +8,11 @@
   <meta name="description" content="PACER (Percentile-Adaptive Curriculum on Expected Radial Error) is a lightweight self-training stage for few-shot anatomical landmark detection that ranks unlabeled radiographs by a millimeter-scale spatial uncertainty and admits pseudo-labels through a self-tightening easy-to-hard percentile curriculum. WACV 2027.">
   <meta name="keywords" content="PACER, anatomical landmark detection, few-shot learning, semi-supervised learning, self-training, pseudo-labels, curriculum learning, expected radial error, uncertainty, medical imaging, X-ray, cephalometric, WACV 2027">
   <meta name="author" content="Roberto Di Via, Francesca Odone, Vito Paolo Pastore">
+  <meta name="robots" content="index, follow, max-image-preview:large">
   <link rel="canonical" href="https://malga-vision.github.io/PACER-wacv27-AcademicPage/">
 
   <!-- Open Graph -->
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="article">
   <meta property="og:site_name" content="PACER (WACV 2027)">
   <meta property="og:title" content="PACER: Curriculum Self-Training with Spatial Uncertainty for Pseudo-Label Selection in Few-Shot Anatomical Landmark Detection">
   <meta property="og:description" content="Rank the unlabeled pool by Expected Radial Error, a label-free millimeter-scale uncertainty, and admit pseudo-labels through a self-tightening percentile curriculum. WACV 2027.">
@@ -34,42 +35,158 @@
   <meta name="citation_author" content="Pastore, Vito Paolo">
   <meta name="citation_conference_title" content="Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)">
   <meta name="citation_publication_date" content="2027">
+  <meta name="citation_conference" content="WACV 2027">
+  <meta name="citation_publisher" content="IEEE">
 
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ScholarlyArticle",
-    "headline": "PACER: Curriculum Self-Training with Spatial Uncertainty for Pseudo-Label Selection in Few-Shot Anatomical Landmark Detection",
-    "name": "PACER: Curriculum Self-Training with Spatial Uncertainty for Pseudo-Label Selection in Few-Shot Anatomical Landmark Detection",
-    "alternativeHeadline": "PACER (Percentile-Adaptive Curriculum on Expected Radial Error)",
-    "author": [
-      {"@type": "Person", "name": "Roberto Di Via", "sameAs": "https://scholar.google.com/citations?user=qGS6cv4AAAAJ", "affiliation": {"@type": "Organization", "name": "MaLGa-DIBRIS, University of Genoa, Italy"}},
-      {"@type": "Person", "name": "Francesca Odone", "sameAs": "https://scholar.google.com/citations?user=riK7DscAAAAJ", "affiliation": {"@type": "Organization", "name": "MaLGa-DIBRIS, University of Genoa, Italy"}},
-      {"@type": "Person", "name": "Vito Paolo Pastore", "sameAs": "https://scholar.google.com/citations?user=-boYCXcAAAAJ", "affiliation": {"@type": "Organization", "name": "MaLGa-DIBRIS, University of Genoa, Italy"}}
-    ],
-    "datePublished": "2027",
-    "inLanguage": "en",
-    "keywords": "anatomical landmark detection, few-shot learning, self-training, pseudo-labels, curriculum learning, expected radial error, uncertainty, medical imaging",
-    "abstract": "Anatomical landmark detection is bottlenecked by the cost of expert annotation, making the few-shot regime the most relevant setting in practice: a handful of labeled images alongside a larger unlabeled pool. We introduce PACER (Percentile-Adaptive Curriculum on Expected Radial Error), a lightweight finetuning stage that mines the unlabeled pool to improve a pre-trained heatmap detector, ranking unlabeled images by the Expected Radial Error and admitting them through a percentile gate that expands an easy-to-hard curriculum.",
-    "image": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/static/images/teaser.jpg",
-    "url": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/",
-    "mainEntityOfPage": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/",
-    "publication": {
-      "@type": "PublicationEvent",
-      "name": "IEEE/CVF Winter Conference on Applications of Computer Vision (WACV 2027)",
-      "startDate": "2027-01-04",
-      "endDate": "2027-01-08",
-      "location": {"@type": "Place", "name": "Orlando, Florida, USA"}
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ScholarlyArticle",
+      "@id": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/#article",
+      "headline": "PACER: Curriculum Self-Training with Spatial Uncertainty for Pseudo-Label Selection in Few-Shot Anatomical Landmark Detection",
+      "name": "PACER: Curriculum Self-Training with Spatial Uncertainty for Pseudo-Label Selection in Few-Shot Anatomical Landmark Detection",
+      "alternativeHeadline": "PACER (Percentile-Adaptive Curriculum on Expected Radial Error)",
+      "abstract": "Anatomical landmark detection is bottlenecked by the cost of expert annotation, making the few-shot regime the most relevant setting in practice: a handful of labeled images alongside a larger unlabeled pool. Self-training is a natural framework here, but treating unreliable predictions as pseudo-labels can trigger confirmation bias, and the class-confidence thresholds used in classification have no analogue in dense coordinate regression. We introduce PACER (Percentile-Adaptive Curriculum on Expected Radial Error), a lightweight finetuning stage that mines the unlabeled pool to improve a pre-trained heatmap detector. PACER ranks unlabeled images by the Expected Radial Error (ERE), a label-free, geometry-aware, millimeter-scale uncertainty estimate derived from the predicted heatmaps, and admits them through a percentile gate that expands an easy-to-hard curriculum over the current pool distribution. Because ERE is physically scaled rather than bounded, the gate needs no dataset-specific millimeter threshold and tightens in absolute terms as the detector sharpens, a property a class-probability curriculum cannot have. Across chest, cephalometric, and hand radiographs, comparing only within matched-backbone groups, PACER improves every prior it finetunes: from a plain supervised base it attains the lowest MRE among the pool-only methods sharing that backbone on chest and cephalometric, at a fraction of their cost, and on a recent diffusion-pretrained prior it lowers error on all three benchmarks. The gains are broad and clinically targeted, improving 61 of 62 landmarks at 5 shots and concentrating on the anatomically hardest ones.",
+      "author": [
+        {
+          "@type": "Person",
+          "name": "Roberto Di Via",
+          "sameAs": "https://scholar.google.com/citations?user=qGS6cv4AAAAJ",
+          "affiliation": {
+            "@id": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/#unige"
+          }
+        },
+        {
+          "@type": "Person",
+          "name": "Francesca Odone",
+          "sameAs": "https://scholar.google.com/citations?user=riK7DscAAAAJ",
+          "affiliation": {
+            "@id": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/#unige"
+          }
+        },
+        {
+          "@type": "Person",
+          "name": "Vito Paolo Pastore",
+          "sameAs": "https://scholar.google.com/citations?user=-boYCXcAAAAJ",
+          "affiliation": {
+            "@id": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/#unige"
+          }
+        }
+      ],
+      "datePublished": "2027",
+      "inLanguage": "en",
+      "isAccessibleForFree": true,
+      "keywords": [
+        "anatomical landmark detection",
+        "few-shot learning",
+        "semi-supervised learning",
+        "self-training",
+        "pseudo-labels",
+        "curriculum learning",
+        "expected radial error",
+        "uncertainty",
+        "medical imaging",
+        "WACV 2027"
+      ],
+      "image": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/static/images/teaser.jpg",
+      "url": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/",
+      "mainEntityOfPage": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/",
+      "publication": {
+        "@type": "PublicationEvent",
+        "name": "IEEE/CVF Winter Conference on Applications of Computer Vision (WACV 2027)",
+        "startDate": "2027-01-04",
+        "endDate": "2027-01-08",
+        "location": {
+          "@type": "Place",
+          "name": "Orlando, Florida, USA"
+        }
+      },
+      "workExample": {
+        "@id": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/#code"
+      },
+      "citation": {
+        "@type": "ScholarlyArticle",
+        "name": "CDPM-Align: Multi-Scale Guidance-Aligned Diffusion Pretraining for Robust Few-Shot Anatomical Landmark Detection",
+        "url": "https://malga-vision.github.io/CDPM-Align_AcademicPage/"
+      }
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "@id": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/#code",
+      "name": "PACER",
+      "codeRepository": "https://github.com/Malga-Vision/PACER-wacv27",
+      "programmingLanguage": "Python",
+      "runtimePlatform": "PyTorch",
+      "license": "https://opensource.org/licenses/MIT",
+      "isPartOf": {
+        "@id": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/#article"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/#unige",
+      "name": "MaLGa-DIBRIS, University of Genoa",
+      "url": "https://malga.unige.it/"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is PACER?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "PACER (Percentile-Adaptive Curriculum on Expected Radial Error) is a lightweight self-training stage for few-shot anatomical landmark detection, published at WACV 2027. Starting from a pre-trained heatmap detector and a handful of labeled radiographs, it mines a larger unlabeled pool: it ranks unlabeled images by the Expected Radial Error (ERE) and admits the most reliable ones as pseudo-labels through a percentile gate that grows from easy to hard over the curriculum stages."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the Expected Radial Error (ERE)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ERE is a label-free, geometry-aware, millimeter-scale uncertainty read from a predicted heatmap: the expected physical distance of the heatmap mass from the predicted landmark location. It is close to zero for a sharp unimodal heatmap and large for a diffuse or multimodal one. PACER averages per-landmark ERE into one score per image."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why a percentile gate instead of a fixed threshold?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A fixed millimeter threshold depends on anatomy, pixel spacing, landmark count and the current model. PACER admits the lowest-ERE fraction of the pool instead, so the induced millimeter threshold is read off the current pool. As the detector sharpens, the same percentile maps to a smaller threshold, so the gate becomes stricter in absolute terms (self-tightening), and percentile admission is unaffected by a global change of pixel spacing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does PACER improve landmark detection?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "At 5 shots, PACER improves 61 of the 62 landmarks across chest (Shenzhen), cephalometric (ISBI2015) and hand (DHA) radiographs against the base it was finetuned from. On top of the diffusion-pretrained CDPM-Align prior it lowers MRE on all three benchmarks (chest 4.14 to 2.65 px, cephalometric 2.94 to 2.19 mm, hand 4.19 to 1.40 mm). From the shared ImageNet base it is the best pool-only method on chest and cephalometric and is roughly 6 times faster than the semi-supervised baselines at a matched budget."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the code available?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. The official PyTorch implementation, with every baseline, ablation and the analysis scripts for the paper tables, is at https://github.com/Malga-Vision/PACER-wacv27 under the MIT license."
+          }
+        }
+      ]
     }
-  }
+  ]
+}
   </script>
 
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="static/css/bulma.min.css">
   <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
   <link rel="stylesheet" href="static/css/bulma-slider.min.css">
-  <link rel="icon" href="data:,">
+  <link rel="icon" type="image/svg+xml" href="static/images/favicon.svg">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="static/css/index.css">
 
@@ -208,7 +325,7 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
-          <h2 class="title is-3">Abstract</h2>
+          <h2 class="title is-3" id="abstract">Abstract</h2>
           <div class="content has-text-justified">
             <p>
               Anatomical landmark detection is bottlenecked by the cost of expert annotation, making the few-shot regime the most relevant setting in practice: a handful of labeled images alongside a larger unlabeled pool. Self-training is a natural framework here, but treating unreliable predictions as pseudo-labels can trigger confirmation bias, and the class-confidence thresholds used in classification have no analogue in dense coordinate regression. We introduce PACER (Percentile-Adaptive Curriculum on Expected Radial Error), a lightweight finetuning stage that mines the unlabeled pool to improve a pre-trained heatmap detector. PACER ranks unlabeled images by the Expected Radial Error (ERE), a label-free, geometry-aware, millimeter-scale uncertainty estimate derived from the predicted heatmaps, and admits them through a percentile gate that expands an easy-to-hard curriculum over the current pool distribution. Because ERE is physically scaled rather than bounded, the gate needs no dataset-specific millimeter threshold and tightens in absolute terms as the detector sharpens, a property a class-probability curriculum cannot have. Across chest, cephalometric, and hand radiographs, comparing only within matched-backbone groups, PACER improves every prior it finetunes: from a plain supervised base it attains the lowest MRE among the pool-only methods sharing that backbone on chest and cephalometric, at a fraction of their cost, and on a recent diffusion-pretrained prior it lowers error on all three benchmarks. The gains are broad and clinically targeted, improving 61 of 62 landmarks at 5 shots and concentrating on the anatomically hardest ones.
@@ -410,6 +527,23 @@
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container is-max-desktop content">
+      <h2 class="title">Frequently asked questions</h2>
+          <h3 class="title is-5" style="margin-top:1.2rem;">What is PACER?</h3>
+          <p>PACER (Percentile-Adaptive Curriculum on Expected Radial Error) is a lightweight self-training stage for few-shot anatomical landmark detection, published at WACV 2027. Starting from a pre-trained heatmap detector and a handful of labeled radiographs, it mines a larger unlabeled pool: it ranks unlabeled images by the Expected Radial Error (ERE) and admits the most reliable ones as pseudo-labels through a percentile gate that grows from easy to hard over the curriculum stages.</p>
+          <h3 class="title is-5" style="margin-top:1.2rem;">What is the Expected Radial Error (ERE)?</h3>
+          <p>ERE is a label-free, geometry-aware, millimeter-scale uncertainty read from a predicted heatmap: the expected physical distance of the heatmap mass from the predicted landmark location. It is close to zero for a sharp unimodal heatmap and large for a diffuse or multimodal one. PACER averages per-landmark ERE into one score per image.</p>
+          <h3 class="title is-5" style="margin-top:1.2rem;">Why a percentile gate instead of a fixed threshold?</h3>
+          <p>A fixed millimeter threshold depends on anatomy, pixel spacing, landmark count and the current model. PACER admits the lowest-ERE fraction of the pool instead, so the induced millimeter threshold is read off the current pool. As the detector sharpens, the same percentile maps to a smaller threshold, so the gate becomes stricter in absolute terms (self-tightening), and percentile admission is unaffected by a global change of pixel spacing.</p>
+          <h3 class="title is-5" style="margin-top:1.2rem;">How much does PACER improve landmark detection?</h3>
+          <p>At 5 shots, PACER improves 61 of the 62 landmarks across chest (Shenzhen), cephalometric (ISBI2015) and hand (DHA) radiographs against the base it was finetuned from. On top of the diffusion-pretrained <a href="https://malga-vision.github.io/CDPM-Align_AcademicPage/">CDPM-Align</a> prior it lowers MRE on all three benchmarks (chest 4.14 to 2.65 px, cephalometric 2.94 to 2.19 mm, hand 4.19 to 1.40 mm). From the shared ImageNet base it is the best pool-only method on chest and cephalometric and is roughly 6 times faster than the semi-supervised baselines at a matched budget.</p>
+          <h3 class="title is-5" style="margin-top:1.2rem;">Is the code available?</h3>
+          <p>Yes. The official PyTorch implementation, with every baseline, ablation and the analysis scripts for the paper tables, is at <a href="https://github.com/Malga-Vision/PACER-wacv27">github.com/Malga-Vision/PACER-wacv27</a> under the MIT license.</p>
     </div>
   </section>
 

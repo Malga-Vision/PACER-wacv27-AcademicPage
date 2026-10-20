@@ -1,0 +1,23 @@
+# PACER (WACV 2027)
+
+> PACER: Curriculum Self-Training with Spatial Uncertainty for Pseudo-Label Selection in Few-Shot Anatomical Landmark Detection. Roberto Di Via, Francesca Odone, Vito Paolo Pastore (MaLGa-DIBRIS, University of Genoa, Italy). IEEE/CVF Winter Conference on Applications of Computer Vision (WACV 2027).
+
+PACER (Percentile-Adaptive Curriculum on Expected Radial Error) is a lightweight self-training stage that improves a pre-trained heatmap landmark detector using a few labeled radiographs and a larger unlabeled pool. It ranks unlabeled images by the Expected Radial Error (ERE), a label-free, millimeter-scale uncertainty read from the predicted heatmaps, and admits them as pseudo-labels through a percentile gate that expands an easy-to-hard curriculum. Because ERE is physically scaled, the gate needs no dataset-specific millimeter threshold and tightens in absolute terms as the detector sharpens.
+
+Key results (5-shot, chest Shenzhen / cephalometric ISBI2015 / hand DHA):
+- Improves 61 of 62 landmarks against the base it finetunes, concentrating on the hardest ones.
+- On the CDPM-Align diffusion prior, MRE drops 4.14 -> 2.65 px (chest), 2.94 -> 2.19 mm (cephalometric), 4.19 -> 1.40 mm (hand).
+- From the shared ImageNet base it is the best pool-only method on chest and cephalometric, about 6x faster than semi-supervised baselines.
+
+## Links
+- [Project page](https://malga-vision.github.io/PACER-wacv27-AcademicPage/)
+- [Code (PyTorch, MIT)](https://github.com/Malga-Vision/PACER-wacv27)
+- [Related: CDPM-Align (MICCAI 2026)](https://malga-vision.github.io/CDPM-Align_AcademicPage/)
+
+## Citation
+@inproceedings{divia2027pacer,
+  title     = {{PACER}: Curriculum Self-Training with Spatial Uncertainty for Pseudo-Label Selection in Few-Shot Anatomical Landmark Detection},
+  author    = {Di Via, Roberto and Odone, Francesca and Pastore, Vito Paolo},
+  booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
+  year      = {2027}
+}
