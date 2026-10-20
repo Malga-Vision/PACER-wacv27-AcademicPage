@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>PACER: Curriculum Self-Training with Spatial Uncertainty for Few-Shot Anatomical Landmark Detection (WACV 2027)</title>
+  <meta name="description" content="PACER (Percentile-Adaptive Curriculum on Expected Radial Error) is a lightweight self-training stage for few-shot anatomical landmark detection that ranks unlabeled radiographs by a millimeter-scale spatial uncertainty and admits pseudo-labels through a self-tightening easy-to-hard percentile curriculum. WACV 2027.">
+  <meta name="keywords" content="PACER, anatomical landmark detection, few-shot learning, semi-supervised learning, self-training, pseudo-labels, curriculum learning, expected radial error, uncertainty, medical imaging, X-ray, cephalometric, WACV 2027">
+  <meta name="author" content="Roberto Di Via, Francesca Odone, Vito Paolo Pastore">
+  <link rel="canonical" href="https://malga-vision.github.io/PACER-wacv27-AcademicPage/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="PACER (WACV 2027)">
+  <meta property="og:title" content="PACER: Curriculum Self-Training with Spatial Uncertainty for Pseudo-Label Selection in Few-Shot Anatomical Landmark Detection">
+  <meta property="og:description" content="Rank the unlabeled pool by Expected Radial Error, a label-free millimeter-scale uncertainty, and admit pseudo-labels through a self-tightening percentile curriculum. WACV 2027.">
+  <meta property="og:url" content="https://malga-vision.github.io/PACER-wacv27-AcademicPage/">
+  <meta property="og:image" content="https://malga-vision.github.io/PACER-wacv27-AcademicPage/static/images/teaser.jpg">
+  <meta property="og:image:width" content="1400">
+  <meta property="og:image:height" content="1247">
+  <meta property="og:image:alt" content="Predicted heatmaps on hand, cephalometric and chest radiographs tightening across the four PACER curriculum stages">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PACER: Curriculum Self-Training with Spatial Uncertainty for Few-Shot Anatomical Landmark Detection (WACV 2027)">
+  <meta name="twitter:description" content="Rank the unlabeled pool by Expected Radial Error and admit pseudo-labels through a self-tightening percentile curriculum. WACV 2027.">
+  <meta name="twitter:image" content="https://malga-vision.github.io/PACER-wacv27-AcademicPage/static/images/teaser.jpg">
+
+  <!-- Google Scholar (add citation_pdf_url once the PDF is hosted) -->
+  <meta name="citation_title" content="PACER: Curriculum Self-Training with Spatial Uncertainty for Pseudo-Label Selection in Few-Shot Anatomical Landmark Detection">
+  <meta name="citation_author" content="Di Via, Roberto">
+  <meta name="citation_author" content="Odone, Francesca">
+  <meta name="citation_author" content="Pastore, Vito Paolo">
+  <meta name="citation_conference_title" content="Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)">
+  <meta name="citation_publication_date" content="2027">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "PACER: Curriculum Self-Training with Spatial Uncertainty for Pseudo-Label Selection in Few-Shot Anatomical Landmark Detection",
+    "name": "PACER: Curriculum Self-Training with Spatial Uncertainty for Pseudo-Label Selection in Few-Shot Anatomical Landmark Detection",
+    "alternativeHeadline": "PACER (Percentile-Adaptive Curriculum on Expected Radial Error)",
+    "author": [
+      {"@type": "Person", "name": "Roberto Di Via", "sameAs": "https://scholar.google.com/citations?user=qGS6cv4AAAAJ", "affiliation": {"@type": "Organization", "name": "MaLGa-DIBRIS, University of Genoa, Italy"}},
+      {"@type": "Person", "name": "Francesca Odone", "sameAs": "https://scholar.google.com/citations?user=riK7DscAAAAJ", "affiliation": {"@type": "Organization", "name": "MaLGa-DIBRIS, University of Genoa, Italy"}},
+      {"@type": "Person", "name": "Vito Paolo Pastore", "sameAs": "https://scholar.google.com/citations?user=-boYCXcAAAAJ", "affiliation": {"@type": "Organization", "name": "MaLGa-DIBRIS, University of Genoa, Italy"}}
+    ],
+    "datePublished": "2027",
+    "inLanguage": "en",
+    "keywords": "anatomical landmark detection, few-shot learning, self-training, pseudo-labels, curriculum learning, expected radial error, uncertainty, medical imaging",
+    "abstract": "Anatomical landmark detection is bottlenecked by the cost of expert annotation, making the few-shot regime the most relevant setting in practice: a handful of labeled images alongside a larger unlabeled pool. We introduce PACER (Percentile-Adaptive Curriculum on Expected Radial Error), a lightweight finetuning stage that mines the unlabeled pool to improve a pre-trained heatmap detector, ranking unlabeled images by the Expected Radial Error and admitting them through a percentile gate that expands an easy-to-hard curriculum.",
+    "image": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/static/images/teaser.jpg",
+    "url": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/",
+    "mainEntityOfPage": "https://malga-vision.github.io/PACER-wacv27-AcademicPage/",
+    "publication": {
+      "@type": "PublicationEvent",
+      "name": "IEEE/CVF Winter Conference on Applications of Computer Vision (WACV 2027)",
+      "startDate": "2027-01-04",
+      "endDate": "2027-01-08",
+      "location": {"@type": "Place", "name": "Orlando, Florida, USA"}
+    }
+  }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <style>
+    .res-table { width:100%; border-collapse:collapse; font-size:0.8rem; }
+    .res-table th, .res-table td { padding:6px 8px; border:1px solid #ddd; text-align:center; white-space:nowrap; }
+    .res-table td:first-child, .res-table th:first-child { text-align:left; }
+    .res-table th:not(:first-child) { text-align:center !important; }
+    .res-table thead th { background-color:#f0f0f0; }
+    .res-table .ds td { background-color:#fafafa; font-style:italic; font-weight:bold; }
+    .res-table .grp td { border-top:2px solid #999; }
+    .res-table .ours td { background-color:#e8f4e8; }
+    .res-table u { text-decoration-thickness:1px; text-underline-offset:2px; }
+    .caption { margin-top:0.5rem; font-size:0.9rem; color:#666; }
+    .placeholder-box { border:2px dashed #ccc; border-radius:8px; padding:2.5rem 1rem; text-align:center; color:#888; background:#fafafa; }
+    .placeholder-box .icon { font-size:2.5rem; margin-bottom:1rem; }
+    .bib-wrap { position:relative; }
+    .bib-wrap pre { white-space:pre-wrap; word-break:break-word; }
+    .copy-btn { position:absolute; top:0.5rem; right:0.5rem; }
+    .eq { font-family:'Castoro', serif; font-size:1.05rem; text-align:center; margin:1rem 0; overflow-x:auto; white-space:nowrap; line-height:2; }
+    .venue-badge { cursor:default; margin-top:5px; margin-bottom:5px; }
+    .hero > .container { min-width:0; width:100%; } /* stop wide tables stretching the flex hero on phones */
+    @media screen and (max-width: 768px) {
+      .publication-title { font-size:26px !important; }
+      .hero-body { padding-left:1rem; padding-right:1rem; }
+    }
+  </style>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title" style="font-size: 36px;">
+              PACER:<br>
+              Curriculum Self-Training with Spatial Uncertainty for Pseudo-Label Selection in Few-Shot Anatomical Landmark Detection
+            </h1>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=qGS6cv4AAAAJ" target="_blank" rel="noopener">Roberto Di Via</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=riK7DscAAAAJ&amp;hl=it" target="_blank" rel="noopener">Francesca Odone</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=-boYCXcAAAAJ&amp;hl=it" target="_blank" rel="noopener">Vito Paolo Pastore</a><sup>1</sup>
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>MaLGa-DIBRIS, University of Genoa, Italy</span>
+            </div>
+
+            <div class="is-size-6" style="margin-top:0.5rem; color:#555;">
+              WACV 2027 &middot; Orlando, Florida &middot; January 4&ndash;8, 2027
+            </div>
+
+            <div class="column has-text-centered" style="margin-top:1rem;">
+              <div class="publication-links">
+                <!-- Replace href with static/pdfs/paper.pdf (and drop onclick) once the PDF is hosted -->
+                <span class="link-block">
+                  <a href="#" class="external-link button is-normal is-rounded is-dark" onclick="alert('Paper coming soon');return false;">
+                    <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="#" class="external-link button is-normal is-rounded is-dark" onclick="alert('Supplementary material coming soon');return false;">
+                    <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                    <span>Supplementary</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="#" class="external-link button is-normal is-rounded is-dark" onclick="alert('arXiv version coming soon');return false;">
+                    <span class="icon"><i class="ai ai-arxiv"></i></span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://github.com/Malga-Vision/PACER-wacv27" target="_blank" rel="noopener" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fab fa-github"></i></span>
+                    <span>Code</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="#poster" class="external-link button is-normal is-rounded is-dark" onclick="alert('Poster coming soon');return false;">
+                    <span class="icon"><i class="fas fa-image"></i></span>
+                    <span>Poster</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="#video" class="external-link button is-normal is-rounded is-dark" onclick="alert('Video coming soon');return false;">
+                    <span class="icon"><i class="fab fa-youtube"></i></span>
+                    <span>Video</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <span class="button is-normal is-rounded is-link venue-badge">
+                    <span class="icon"><i class="fas fa-calendar-check"></i></span>
+                    <span>WACV 2027</span>
+                  </span>
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teaser -->
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <img src="static/images/teaser.jpg" width="1400" height="1247" alt="Predicted heatmaps of one hard pool image per dataset (hand, cephalometric, chest) across the four PACER curriculum stages, showing ERE and MRE decreasing as the gate opens" style="width:100%; height:auto;">
+        <p class="has-text-centered caption">
+          <b>Figure 1:</b> Self-tightening across curriculum stages (5-shot): the predicted heatmap of one hard but recoverable pool image per dataset, zoomed on its most-improving landmark, as the gate opens from the lowest-ERE quarter of the pool to all of it.
+        </p>
+        <h2 class="subtitle has-text-centered" style="margin-top:1.5rem;">
+          <b>TL;DR</b> &mdash; <b>PACER</b> ranks unlabeled radiographs by the <b>Expected Radial Error</b>, a label-free, millimeter-scale uncertainty read from the predicted heatmaps, and admits them as pseudo-labels through a <b>self-tightening, easy-to-hard percentile curriculum</b> that improves every prior it finetunes.
+        </h2>
+      </div>
+    </div>
+  </section>
+
+  <!-- Abstract -->
+  <section class="section hero is-light">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Anatomical landmark detection is bottlenecked by the cost of expert annotation, making the few-shot regime the most relevant setting in practice: a handful of labeled images alongside a larger unlabeled pool. Self-training is a natural framework here, but treating unreliable predictions as pseudo-labels can trigger confirmation bias, and the class-confidence thresholds used in classification have no analogue in dense coordinate regression. We introduce PACER (Percentile-Adaptive Curriculum on Expected Radial Error), a lightweight finetuning stage that mines the unlabeled pool to improve a pre-trained heatmap detector. PACER ranks unlabeled images by the Expected Radial Error (ERE), a label-free, geometry-aware, millimeter-scale uncertainty estimate derived from the predicted heatmaps, and admits them through a percentile gate that expands an easy-to-hard curriculum over the current pool distribution. Because ERE is physically scaled rather than bounded, the gate needs no dataset-specific millimeter threshold and tightens in absolute terms as the detector sharpens, a property a class-probability curriculum cannot have. Across chest, cephalometric, and hand radiographs, comparing only within matched-backbone groups, PACER improves every prior it finetunes: from a plain supervised base it attains the lowest MRE among the pool-only methods sharing that backbone on chest and cephalometric, at a fraction of their cost, and on a recent diffusion-pretrained prior it lowers error on all three benchmarks. The gains are broad and clinically targeted, improving 61 of 62 landmarks at 5 shots and concentrating on the anatomically hardest ones.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Method -->
+  <section class="section hero is-small" id="method">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column">
+          <h2 class="title is-3">Method</h2>
+        </div>
+      </div>
+
+      <div class="columns is-centered">
+        <div class="column">
+          <img src="static/images/pipeline.png" width="1600" height="571" loading="lazy" alt="PACER pipeline: four curriculum stages, each scoring the unlabeled pool by ERE, sorting it, admitting the lowest-ERE 25/50/75/100 percent, and finetuning on the labeled set plus the admitted pseudo-labels" style="width:100%; height:auto;">
+          <p class="has-text-centered caption">
+            <b>Figure 2:</b> <b>PACER overview.</b> One curriculum stage: score the pool by ERE, admit the lowest-ERE fraction through the percentile gate, and finetune on the oracle set plus the admitted pseudo-labels; the gate widens at each successive stage.
+          </p>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered" style="margin-top:1rem;">
+        <div class="column is-four-fifths">
+          <div class="content has-text-justified">
+            <p>
+              We study the semi-supervised setting of a small labeled (oracle) set alongside a larger unlabeled pool from the same distribution. Self-training is the natural framework, but its failure mode, confirmation bias, makes the selection rule the crux. PACER finetunes a pre-trained heatmap detector that predicts one probability heatmap per landmark; trained on one-hot targets, the network learns its own free-form heatmap, so the resulting dispersion reflects the model's confidence and is readable as uncertainty. PACER couples two components.
+            </p>
+
+            <h3 class="title is-4" style="margin-top:1.5rem;">Expected Radial Error (ERE) as selection signal</h3>
+            <p>
+              For each predicted heatmap <i>q<sub>k</sub></i> and its refined mode <i>&ucirc;<sub>k</sub></i>, the per-landmark ERE is the expected physical distance of heatmap mass from the predicted location, with <i>s</i> the pixel spacing in millimeters:
+            </p>
+            <p class="eq">
+              ERE<sub><i>k</i></sub>(<i>x</i>; &theta;) = &sum;<sub><i>u</i>&isin;&Omega;</sub> <i>q<sub>k</sub></i>(<i>u</i>) &nbsp;&#8214;<i>s</i> &odot; (<i>u</i> &minus; <i>&ucirc;<sub>k</sub></i>)&#8214;<sub>2</sub>,<br>
+              <i>e</i>(<i>x</i>; &theta;) = (1/<i>K</i>) &sum;<sub><i>k</i></sub> ERE<sub><i>k</i></sub>(<i>x</i>; &theta;)
+            </p>
+            <p>
+              ERE is <b>label-free</b> (a function of the prediction only), <b>geometry-aware</b> (close to zero for a sharp unimodal map, large for a diffuse or multimodal one), and <b>physically interpretable</b> (in millimeters, comparable across landmarks, images, and spacings). We gate at the image level, averaging per-landmark ERE into one image score <i>e</i>, which keeps targets image-wise consistent and stabilizes gradients.
+            </p>
+
+            <h3 class="title is-4" style="margin-top:1.5rem;">Percentile-adaptive curriculum gate</h3>
+            <p>
+              A fixed millimeter threshold is fragile, since the right value depends on anatomy, pixel spacing, landmark count, and the current model. PACER instead sorts the pool of <i>M</i> images by ERE and, at gate level <i>&pi;</i>, admits the <i>m<sub>&pi;</sub></i> = round(<i>&pi;</i>/100 &middot; <i>M</i>) lowest-ERE images. The induced threshold <i>&rho;<sub>&pi;</sub></i> = <i>e</i><sub>(<i>m<sub>&pi;</sub></i>)</sub> is read off the current pool rather than chosen in advance. The gate level grows linearly over <i>T</i> stages up to the cap <i>&Pi;</i>:
+            </p>
+            <p class="eq">
+              <i>&pi;<sub>t</sub></i> = (<i>t</i> / <i>T</i>) &middot; <i>&Pi;</i>, &nbsp;&nbsp; <i>t</i> = 1, &hellip;, <i>T</i>
+            </p>
+            <p>
+              This realizes an easy-to-hard ordering grounded in the model's own millimeter-scaled uncertainty. By default PACER uses the 4-stage curriculum with <i>&Pi;</i> = 100, so the whole pool is eventually admitted and nothing is discarded permanently. At the start of each stage the pool is re-scored and the pseudo-targets of the admitted images are frozen; they are refreshed once per stage, not per epoch, which gives a stable objective and curbs confirmation bias. The only extra work over vanilla self-training is one ERE scoring pass over the pool per stage.
+            </p>
+
+            <h3 class="title is-4" style="margin-top:1.5rem;">Self-tightening</h3>
+            <p>
+              As training sharpens the heatmaps and the pool ERE shifts toward zero, the same <i>&pi;</i> maps to a smaller <i>&rho;<sub>&pi;</sub></i> at each stage, so the gate grows <b>stricter in absolute terms as the model grows more reliable</b>, the opposite of a fixed threshold (Figure 1); the exception is the final stage under <i>&Pi;</i> = 100, which readmits the whole pool by construction. Because ERE is physically scaled rather than bounded, this is a property a class-probability curriculum cannot have. Percentile admission is also calibration-invariant: a global change of <i>s</i> rescales every ERE equally, leaving ranking and admitted set unchanged, so the gate behaves identically on the uncalibrated Shenzhen benchmark.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="section hero is-light" id="results">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column">
+          <h2 class="title is-3">Experimental Results</h2>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered" style="margin-top:1rem;">
+        <div class="column is-four-fifths">
+          <div class="content has-text-justified">
+            <p>
+              We evaluate on three public radiographic benchmarks: <b>Shenzhen</b> (chest, 279 images, 6 landmarks; no usable pixel spacing, so results are in pixels), <b>ISBI2015</b> (400 lateral cephalograms, 19 landmarks) and <b>DHA</b> (910 hand radiographs, 37 landmarks). Results are mean &plusmn; std over three to five seeds at the 5-shot budget. Methods are compared within each group (U-Net pool, HRNet, diffusion), set apart by the prior they finetune; <b>bold</b> is best and <u>underlined</u> second within group.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-centered" style="margin-top:1rem;">
+        <div class="column">
+          <h3 class="title is-4 has-text-centered">Table 1: 5-shot landmark detection</h3>
+          <div style="overflow-x:auto;">
+            <table class="res-table">
+              <thead>
+                <tr><th>Method</th><th>MRE&darr;</th><th>SDR@2&uarr;</th><th>P95&darr;</th></tr>
+              </thead>
+              <tbody>
+                <tr class="ds"><td colspan="4">Shenzhen (chest), pixels</td></tr>
+                <tr><td>ResNet-101 (ImageNet)</td><td>17.52 &plusmn; 7.47</td><td>34.07 &plusmn; 7.77</td><td>124.21 &plusmn; 53.40</td></tr>
+                <tr><td>Mean Teacher</td><td><u>11.36 &plusmn; 3.95</u></td><td><b>43.93 &plusmn; 4.85</b></td><td>75.21 &plusmn; 54.61</td></tr>
+                <tr><td>FixMatch-pose</td><td>15.23 &plusmn; 15.21</td><td>23.33 &plusmn; 5.36</td><td>73.63 &plusmn; 111.09</td></tr>
+                <tr><td>FlexMatch</td><td>20.50 &plusmn; 4.52</td><td>18.27 &plusmn; 7.43</td><td>119.43 &plusmn; 63.33</td></tr>
+                <tr><td>FreeMatch</td><td>12.10 &plusmn; 5.04</td><td>15.13 &plusmn; 5.41</td><td><u>59.24 &plusmn; 60.33</u></td></tr>
+                <tr class="ours"><td><b>PACER (4-stage)</b></td><td><b>7.71 &plusmn; 2.04</b></td><td><u>34.78 &plusmn; 4.30</u></td><td><b>28.41 &plusmn; 27.42</b></td></tr>
+                <tr class="grp"><td>STLD-HRNet</td><td><u>3.57 &plusmn; 1.07</u></td><td><u>33.33 &plusmn; 2.33</u></td><td><u>10.28 &plusmn; 6.09</u></td></tr>
+                <tr class="ours"><td><b>PACER-HRNet</b></td><td><b>3.09 &plusmn; 0.25</b></td><td><b>39.78 &plusmn; 2.59</b></td><td><b>6.80 &plusmn; 0.26</b></td></tr>
+                <tr class="grp"><td>CDPM-Align</td><td><u>4.14 &plusmn; 0.17</u></td><td><b>47.00 &plusmn; 4.91</b></td><td><u>10.90 &plusmn; 3.37</u></td></tr>
+                <tr class="ours"><td><b>CDPM-Align + PACER</b></td><td><b>2.65 &plusmn; 0.10</b></td><td><u>45.22 &plusmn; 3.79</u></td><td><b>6.35 &plusmn; 0.40</b></td></tr>
+
+                <tr class="ds"><td colspan="4">ISBI2015 (cephalometric), mm</td></tr>
+                <tr><td>ResNet-101 (ImageNet)</td><td>6.24 &plusmn; 2.27</td><td>47.73 &plusmn; 8.16</td><td>29.67 &plusmn; 18.58</td></tr>
+                <tr><td>Mean Teacher</td><td>6.34 &plusmn; 0.46</td><td><b>58.73 &plusmn; 2.09</b></td><td>41.35 &plusmn; 4.95</td></tr>
+                <tr><td>FixMatch-pose</td><td>6.89 &plusmn; 2.21</td><td>43.10 &plusmn; 7.18</td><td>43.58 &plusmn; 22.14</td></tr>
+                <tr><td>FlexMatch</td><td><u>5.84 &plusmn; 3.43</u></td><td>49.46 &plusmn; 5.93</td><td>25.79 &plusmn; 26.35</td></tr>
+                <tr><td>FreeMatch</td><td>6.04 &plusmn; 4.39</td><td>46.75 &plusmn; 7.75</td><td><u>24.51 &plusmn; 29.27</u></td></tr>
+                <tr class="ours"><td><b>PACER (4-stage)</b></td><td><b>2.85 &plusmn; 0.51</b></td><td><u>57.39 &plusmn; 3.16</u></td><td><b>6.86 &plusmn; 2.40</b></td></tr>
+                <tr class="grp"><td>STLD-HRNet</td><td><b>2.15 &plusmn; 0.07</b></td><td><b>54.25 &plusmn; 1.95</b></td><td><b>4.82 &plusmn; 0.20</b></td></tr>
+                <tr class="ours"><td><b>PACER-HRNet</b></td><td><u>2.26 &plusmn; 0.02</u></td><td><u>49.33 &plusmn; 0.16</u></td><td><u>4.85 &plusmn; 0.07</u></td></tr>
+                <tr class="grp"><td>CDPM-Align</td><td><u>2.94 &plusmn; 0.49</u></td><td><b>57.54 &plusmn; 2.52</b></td><td><u>6.51 &plusmn; 1.08</u></td></tr>
+                <tr class="ours"><td><b>CDPM-Align + PACER</b></td><td><b>2.19 &plusmn; 0.03</b></td><td><u>55.87 &plusmn; 0.29</u></td><td><b>5.03 &plusmn; 0.24</b></td></tr>
+
+                <tr class="ds"><td colspan="4">DHA (hand), mm</td></tr>
+                <tr><td>ResNet-101 (ImageNet)</td><td>10.94 &plusmn; 1.33</td><td>67.59 &plusmn; 2.58</td><td>81.28 &plusmn; 18.64</td></tr>
+                <tr><td>Mean Teacher</td><td><b>4.02 &plusmn; 2.11</b></td><td><b>83.47 &plusmn; 1.82</b></td><td><b>7.43 &plusmn; 7.17</b></td></tr>
+                <tr><td>FixMatch-pose</td><td>7.90 &plusmn; 3.70</td><td>76.38 &plusmn; 5.14</td><td>49.83 &plusmn; 38.09</td></tr>
+                <tr><td>FlexMatch</td><td>8.30 &plusmn; 9.33</td><td>69.95 &plusmn; 7.31</td><td>50.91 &plusmn; 63.13</td></tr>
+                <tr><td>FreeMatch</td><td>9.81 &plusmn; 11.39</td><td>59.40 &plusmn; 9.88</td><td>53.92 &plusmn; 60.73</td></tr>
+                <tr class="ours"><td><b>PACER (4-stage)</b></td><td><u>4.85 &plusmn; 1.80</u></td><td><u>76.86 &plusmn; 2.70</u></td><td><u>18.42 &plusmn; 10.93</u></td></tr>
+                <tr class="grp"><td>STLD-HRNet</td><td><u>2.31 &plusmn; 0.14</u></td><td><u>40.92 &plusmn; 5.44</u></td><td><u>4.11 &plusmn; 0.16</u></td></tr>
+                <tr class="ours"><td><b>PACER-HRNet</b></td><td><b>1.79 &plusmn; 0.03</b></td><td><b>64.07 &plusmn; 0.88</b></td><td><b>3.79 &plusmn; 0.12</b></td></tr>
+                <tr class="grp"><td>CDPM-Align</td><td><u>4.19 &plusmn; 0.52</u></td><td><u>77.70 &plusmn; 1.17</u></td><td><u>24.66 &plusmn; 2.26</u></td></tr>
+                <tr class="ours"><td><b>CDPM-Align + PACER</b></td><td><b>1.40 &plusmn; 0.12</b></td><td><b>84.57 &plusmn; 1.88</b></td><td><b>3.14 &plusmn; 0.12</b></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="has-text-centered caption">
+            Groups within each dataset (separated by thick lines): U-Net/ResNet-101 pool methods from the shared ImageNet base (first row: the no-pool base); HRNetV2-W18 self-training methods; the diffusion prior CDPM-Align with our curriculum on top. The groups differ in backbone and pretraining, so numbers compare down a group, not across it.
+          </p>
+        </div>
+      </div>
+
+      <!-- Key Findings -->
+      <div class="columns is-centered has-text-centered" style="margin-top:2rem;">
+        <div class="column is-four-fifths">
+          <div class="content has-text-justified">
+            <h3 class="title is-4">Key Findings</h3>
+            <ul style="text-align:left; margin-left:2rem;">
+              <li><b>Near-universal per-landmark gains</b>: against the base each run was finetuned from, PACER improves <b>61 of the 62 landmarks</b> across the three benchmarks at 5 shots (chest 6/6, cephalometric 19/19, hand 36/37, the exception unchanged rather than degraded), and the hardest third of landmarks improves by 34/57/50% on chest/cephalometric/hand.</li>
+              <li><b>Complements a generative prior</b>: on the CDPM-Align checkpoint, CDPM-Align + PACER takes the best MRE and P95 in its block on every dataset (chest 4.14 &rarr; 2.65, cephalometric 2.94 &rarr; 2.19, hand 4.19 &rarr; 1.40).</li>
+              <li><b>Lowest pool-only MRE on chest and cephalometric</b>: finetuning the shared ImageNet base, PACER is the best pool-only method in that group on chest and cephalometric (MRE 7.71 and 2.85) and second to Mean Teacher on hand (4.85 vs. 4.02).</li>
+              <li><b>Cheap</b>: at a matched budget on one A30, PACER is roughly 6&times; faster than every SSL baseline (&asymp;35 vs. 210 min) at lower peak memory.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ranking quality -->
+      <div class="columns is-centered" style="margin-top:2rem;">
+        <div class="column is-four-fifths" style="margin:0 auto;">
+          <h3 class="title is-4 has-text-centered">Why ERE? Ranking quality of label-free signals</h3>
+          <img src="static/images/ranking_quality_5shot.png" width="1507" height="695" loading="lazy" alt="True MRE of the admitted top-k percent pool subset under ERE, peak confidence, entropy, TTA disagreement and Gaussian covariance rankings on DHA, ISBI2015 and Shenzhen" style="width:100%; height:auto;">
+          <p class="has-text-centered caption">
+            <b>Figure 3</b> (from the Supplementary): Pseudo-label ranking quality (5-shot): true MRE of the admitted top-<i>k</i>% pool subset under each label-free ranking signal. Lower curves select higher-quality pseudo-labels first. All signals admit the whole pool at <i>k</i> = 100, so the curves meet there. By rank correlation with the true pool error, ERE leads on every dataset at 5 shots (Spearman &rho; +0.70/+0.58/+0.55 on hand/cephalometric/chest).
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Video & Poster -->
+  <section class="section hero is-small" id="video">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column">
+          <h2 class="title is-3">Video &amp; Poster</h2>
+        </div>
+      </div>
+      <div class="columns is-centered">
+        <div class="column is-half">
+          <h3 class="title is-5 has-text-centered">Video</h3>
+          <!-- To publish: add static/videos/video.mp4 and replace the placeholder below with
+          <video controls muted playsinline preload="metadata" width="100%">
+            <source src="static/videos/video.mp4" type="video/mp4">
+          </video>
+          -->
+          <div class="placeholder-box">
+            <span class="icon"><i class="fas fa-video"></i></span>
+            <p><b>Coming soon</b></p>
+          </div>
+        </div>
+        <div class="column is-half" id="poster">
+          <h3 class="title is-5 has-text-centered">Poster</h3>
+          <!-- To publish: add static/pdfs/poster.pdf and replace the placeholder below with
+          <iframe src="static/pdfs/poster.pdf" width="100%" height="550" style="border:0;"></iframe>
+          and point the hero "Poster" button to static/pdfs/poster.pdf (dropping its onclick)
+          -->
+          <div class="placeholder-box">
+            <span class="icon"><i class="fas fa-image"></i></span>
+            <p><b>Coming soon</b></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BibTeX / Citation -->
+  <section class="section hero is-light" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">Citation</h2>
+      <h3 class="title is-5">BibTeX</h3>
+      <div class="bib-wrap">
+        <button class="button is-small copy-btn" type="button" onclick="copyBib(this)">
+          <span class="icon is-small"><i class="far fa-copy"></i></span><span>Copy</span>
+        </button>
+        <pre><code id="bibtex">@inproceedings{divia2027pacer,
+  title     = {{PACER}: Curriculum Self-Training with Spatial Uncertainty for Pseudo-Label Selection in Few-Shot Anatomical Landmark Detection},
+  author    = {Di Via, Roberto and Odone, Francesca and Pastore, Vito Paolo},
+  booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
+  year      = {2027}
+}</code></pre>
+      </div>
+
+      <h3 class="title is-5" style="margin-top:2rem;">APA Citation</h3>
+      <div class="content" style="background-color:#f5f5f5; padding:1rem; border-radius:4px;">
+        <p>
+          Di Via, R., Odone, F., &amp; Pastore, V. P. (2027).
+          PACER: Curriculum Self-Training with Spatial Uncertainty for Pseudo-Label Selection in Few-Shot Anatomical Landmark Detection.
+          In <i>Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)</i>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related work -->
+  <section class="section">
+    <div class="container is-max-desktop content">
+      <h2 class="title">Related work from our lab</h2>
+      <ul>
+        <li>
+          <b>CDPM-Align</b>: Multi-Scale Guidance-Aligned Diffusion Pretraining for Robust Few-Shot Anatomical Landmark Detection. <i>MICCAI 2026</i>.
+          [<a href="https://malga-vision.github.io/CDPM-Align_AcademicPage/" target="_blank" rel="noopener">Project page</a>]
+          [<a href="https://github.com/Malga-Vision/CDPM-Align" target="_blank" rel="noopener">Code</a>]
+        </li>
+        <li>
+          <b>FairerXRay</b>: Are X-ray Landmark Detection Models Fair? A Preliminary Assessment and Mitigation Strategy. <i>ICCV 2025 Workshop</i>.
+          [<a href="https://malga-vision.github.io/FairerXRay-LandmarkDetection-AcademicPage/" target="_blank" rel="noopener">Project page</a>]
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank" rel="noopener">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank" rel="noopener">Nerfies</a> project page.
+              You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+              Commons Attribution-ShareAlike 4.0 International License</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function copyBib(btn) {
+      var text = document.getElementById('bibtex').innerText;
+      var label = btn.querySelector('span:last-child');
+      var done = function () { label.textContent = 'Copied!'; setTimeout(function () { label.textContent = 'Copy'; }, 1500); };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(done, function () { label.textContent = 'Select & copy'; });
+      } else {
+        var r = document.createRange(); r.selectNodeContents(document.getElementById('bibtex'));
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        try { document.execCommand('copy'); done(); } catch (e) { label.textContent = 'Select & copy'; }
+      }
+    }
+  </script>
+
+</body>
+</html>
