@@ -40,9 +40,11 @@ Anatomical landmark detection is bottlenecked by the cost of expert annotation, 
 - **ISBI2015**: 400 lateral cephalograms, 19 landmarks
 - **Digital Hand Atlas (DHA)**: 910 hand radiographs, 37 landmarks
 
-## Website
+## About this page
 
-This page is built using the [Academic Project Page Template](https://github.com/eliahuhorwitz/Academic-project-page-template) and is hosted on GitHub Pages.
+Static page built with the [MaLGa academic page template](https://github.com/Malga-Vision/malga-academic-page-template): no build step, no third-party scripts. Preview it locally with `python -m http.server` and open http://localhost:8000.
+
+Before pushing, run `python tools/page_guard.py`. The Pages workflow runs the same checks on every push and publishes the page only when they pass.
 
 ## Citation
 
@@ -56,7 +58,3 @@ If you find this work useful, please cite:
   year      = {2027}
 }
 ```
-
-## License
-
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
